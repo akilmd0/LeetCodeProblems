@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<vector<int>> ans;
+    void findSum(vector<int>&temp , vector<int>& arr , int i ,int sum, int x){
+        if(i>=arr.size() || sum+arr[i]>x){
+            return;
+        }
+        else if(sum+arr[i] < x){
+            temp.emplace_back(arr[i]);
+            findSum(temp,arr, i, sum+arr[i] , x);
+            temp.pop_back();
+        }
+        else{
+            temp.emplace_back(arr[i]);
+            ans.emplace_back(temp);
+            temp.pop_back();
+            return;
+        }
+        findSum(temp,arr,i+1,sum,x);
+    }
+    
+    vector<vector<int>> combinationSum(vector<int>& arr, int x) {
+        sort(arr.begin(), arr.end() );
+        ans.clear();
+        vector<int> temp;
+        for(int i=0; i<arr.size() ; i++){
+            temp.push_back(arr[i]);
+            if(arr[i]==x)
+                ans.push_back(temp);
+            else 
+                findSum(temp,arr,i,arr[i],x);
+            temp.pop_back();
+        }
+        return ans;
+    }
+};
